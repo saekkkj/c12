@@ -1,56 +1,64 @@
-var path,boy, leftBoundary,rightBoundary;
-var pathImg,boyImg;
-var i;
-var limitedireita
-var parede2
-
+var garden,rabbit;
+var gardenImg,rabbitImg;
+var apple, appleImg
+var leaf, leafImg
+var Orange,orangeimg
 function preload(){
-  //loadImage (carregarImagem) da pista)
- pathImg= loadImage("path.png")
-  //loadAnimation (carregarAnimação) de corrida para o menino
-boyImg= loadAnimation("jake1.png","jake2.png","jake3.png","jake4.png","jake5.png")
+  gardenImg = loadImage("garden.png");
+  rabbitImg = loadImage("rabbit.png");
+  appleImg = loadImage("apple.png")
+  leafImg = loadImage("leaf.png")
+  orangeimg= loadImage("orangeleaf.png")
 }
 
 function setup(){
+  
   createCanvas(400,400);
- //crie um sprite para a pista
- path=createSprite(100,190,20,20)
-//adicione uma imagem para a pista
-path.addImage("path.png",pathImg)
-//Faça com que a pista seja um fundo que se move dando a ela velocity Y.
-path.velocityY=2
-path.scale=1.2;
+  
+// Moving background
+garden=createSprite(200,200);
+garden.addImage(gardenImg);
 
-//crie um sprite de menino
-boy=createSprite(100,160,20,10)
-//adicione uma animação de corrida para ele
-boy.addAnimation("jake1.png",boyImg)
-boy.scale=0.50;
-//crie um limite à esquerda
-parede2=createSprite(50,100,30,900)
-leftBoundary=createSprite(0,0,100,800);
-leftBoundary.shapecolor="red"
-//defina visibilidade como falsa para o limite à esquerda
-//crie um limite à direita
-parede=createSprite(350,200,20,400)
-rightBoundary=createSprite(410,0,100,800);
-//defina visibilidade como falsa para o limite à direita
+//creating boy running
+rabbit = createSprite(180,340,30,30);
+rabbit.scale =0.09;
+rabbit.addImage(rabbitImg);
 }
+
+
 function draw() {
   background(0);
-  path.velocityY = 4;
-  // mover o menino com o mouse usando mouseX
-  boy.x=World.mouseX;
-  edges= createEdgeSprites();
-  boy.collide(edges[3]);
-  // colidir o menino com os limites invisíveis da esquerda e da direita
-  boy.bounceOff(rightBoundary);
-  boy.bounceOff(leftBoundary);
-
-  //código para redefinir o fundo
-  if(path.y > 400 ){
-    path.y = height/2;
-  }
   
+  edges= createEdgeSprites();
+  rabbit.collide(edges);
+  rabbit.x=World.mouseX
+  var select_sprites = Math.round(random(1,3));
+  if (frameCount % 100 == 0) {
+  if (select_sprites  == 1) 
+  { createLeaves(); }
+  else if  (select_sprites == 2) {
+    createApples(); }
+else {  createOrange(); } }
   drawSprites();
+}
+function createApples() {
+apple=createSprite(random(50,350),40,10,10)
+apple.addImage(appleImg);
+apple.scale=0.1;
+apple.velocityY=5;
+apple.lifetime=150;
+}
+function createLeaves() {
+leaf=createSprite(random(50,350),40,10,10)
+leaf.addImage(leafImg);
+leaf.scale=0.1;
+leaf.velocityY=5;
+leaf.lifetime=150;
+}
+function createOrange(){
+  Orange=createSprite(random(50,350),40,10,10)
+  Orange.addImage(orangeimg);
+  Orange.scale=0.1;
+  Orange.velocityY=5;
+  Orange.lifetime=150; 
 }
